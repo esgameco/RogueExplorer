@@ -5,11 +5,37 @@ const http = require('http');
 const server = http.createServer();
 const wss = new ws.Server({noServer:true});
 
+// Data variables
+// TODO: Remove from global scope somehow
+let playerMap = ['#', '#', '@', '#', '#'];
+let pos = 2;
+
+// TODO: Change parameter names to something better
+const movePlayer = (direction) => {
+    if (direction == 'left')
+        if (pos > 0) {
+            // TODO: Make symbols into constants
+            playerMap[pos-1] = '@';
+            playerMap[pos] = '#';
+            pos--;
+        }
+    if (direction == 'right')
+        if (pos < playerMap.length-1) {
+            playerMap[pos+1] = '@';
+            playerMap[pos] = '#';
+            pos++;
+        }
+};
+
 // Initializes WebSocket server
 wss.on('connection', (ws) => {
-    ws.send('Server -> Client');
-    ws.on('message', (msg) => {
-        console.log(msg);
+    // ws.send('Server -> Client');
+    ws.on('message', (message) => {
+        const msg = JSON.parse(message);
+        if (msg.action == 'move') {
+            movePlayer(msg.direction);
+        }
+        ws.send(playerMap.join(''));
     });
 });
 
