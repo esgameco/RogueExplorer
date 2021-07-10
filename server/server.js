@@ -29,7 +29,6 @@ const movePlayer = (direction) => {
 
 // Initializes WebSocket server
 wss.on('connection', (ws) => {
-    // ws.send('Server -> Client');
     ws.on('message', (message) => {
         const msg = JSON.parse(message);
         if (msg.action == 'move') {
@@ -51,6 +50,4 @@ server.on('upgrade', (req, sock, head) => {
 //     sock.end('cs')
 // })
 
-server.on('listening', () => console.log('Listening on 8080.'));
-
-server.listen(8080);
+server.listen(8080, listeningListener=() => console.log('Listening on 8080.'));
