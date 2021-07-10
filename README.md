@@ -12,7 +12,7 @@ Simple roguelike tile-based map with limited interactions.
 - &#9745; Connect client to server
 
 #### Version 1
-- &#9744; Create websockets server (with express for authentication) to handle requests
+- &#9744; Create socket.io server (with express for authentication) to handle requests
 - &#9744; Use redis to handle item, user, and map data
 - &#9744; Create client ui with react
 - &#9744; Connect client to server
