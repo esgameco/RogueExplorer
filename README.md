@@ -11,7 +11,7 @@ Simple roguelike tile-based map with limited interactions.
 - &#9744; Create client ui with canvas
 - &#9745; Connect client to server
 
-#### Real Build
+#### Version 1
 - &#9744; Create websockets server (with express for authentication) to handle requests
 - &#9744; Use redis to handle item, user, and map data
 - &#9744; Create client ui with react
