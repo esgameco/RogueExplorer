@@ -5,6 +5,7 @@ class ResourceManager {
             '#': 'dc-dngn/wall/brick_brown0',
             '.': 'dc-dngn/floor/dirt0',
             '@': 'player/base/dwarf_m',
+            'd': 'dc-mon/elf',
         }
     }
 

@@ -18,22 +18,26 @@ class GameMap {
     }
 
     draw(ctx) {
+        const width = this.imgMap.length;
+        const height = this.imgMap[0].length;
+
         // Draw Map
-        for (let i = 0; i < this.imgMap.length; i++) {
-            for (let j = 0; j < this.imgMap[i].length; j++) {
+        for (let i = 0; i < width; i++) {
+            for (let j = 0; j < height; j++) {
                 this.imgMap[i][j].forEach(img => {
-                    this.drawImage(ctx, img, i*32, j*32);
+                    this.drawImage(ctx, img, i*32, (height-j-1)*32);
                 });
             }
         }
 
         // Draw Player
-        this.drawImage(ctx, this.rsc_mng.getTile('@'), this.playerPos[0]*32, this.playerPos[1]*32)
+        this.drawImage(ctx, this.rsc_mng.getTile('@'), this.playerPos[0]*32, (height-this.playerPos[1]-1)*32)
     }
 
     drawImage(ctx, img, x, y) {
-        if (img.complete)
+        if (img.complete) {
             ctx.drawImage(img, x, y);
+        }
         else
             img.addEventListener('load', () => { 
                 ctx.drawImage(img, x, y);

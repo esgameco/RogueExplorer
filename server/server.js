@@ -13,13 +13,6 @@ const gMap = require('./game/map')
 // Data variables
 // TODO: Remove from global scope somehow
 let gameData = {
-    // map: [
-    //     [['#'], ['#'], ['#'], ['#'], ['#']],
-    //     [['#'], ['.'], ['.'], ['.'], ['#']],
-    //     [['#'], ['.'], ['.'], ['.'], ['#']],
-    //     [['#'], ['.'], ['.'], ['.'], ['#']],
-    //     [['#'], ['#'], ['#'], ['#'], ['#']],
-    // ],
     map: gMap.generateMap(30, 15),
     pos: [2, 2]
 };
