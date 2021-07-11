@@ -1,6 +1,5 @@
 // Checks if wall exists at position on map
 const checkWall = (gameMap, pos) => {
-    console.log(gameMap[pos[0]][pos[1]])
     return tileExists(gameMap[pos[0]][pos[1]], '#');
 };
 
@@ -29,7 +28,6 @@ const movePlayer = (gameMap, direction, pos) => {
         checkPos = [prevPos[0], prevPos[1]+1];
 
     if (!checkWall(gameMap, checkPos)) {
-        console.log(checkWall(gameMap, checkPos))
         pos = checkPos;
     }
 

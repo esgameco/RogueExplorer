@@ -8,17 +8,19 @@ const wss = new ws.Server({noServer:true});
 
 // User dependencies
 const move = require('./game/move');
+const gMap = require('./game/map')
 
 // Data variables
 // TODO: Remove from global scope somehow
 let gameData = {
-    map: [
-        [['#'], ['#'], ['#'], ['#'], ['#']],
-        [['#'], ['.'], ['.'], ['.'], ['#']],
-        [['#'], ['.'], ['.'], ['.'], ['#']],
-        [['#'], ['.'], ['.'], ['.'], ['#']],
-        [['#'], ['#'], ['#'], ['#'], ['#']],
-    ],
+    // map: [
+    //     [['#'], ['#'], ['#'], ['#'], ['#']],
+    //     [['#'], ['.'], ['.'], ['.'], ['#']],
+    //     [['#'], ['.'], ['.'], ['.'], ['#']],
+    //     [['#'], ['.'], ['.'], ['.'], ['#']],
+    //     [['#'], ['#'], ['#'], ['#'], ['#']],
+    // ],
+    map: gMap.generateMap(30, 15),
     pos: [2, 2]
 };
 
@@ -28,6 +30,8 @@ wss.on('connection', (ws) => {
         const msg = JSON.parse(message);
         if (msg.action == 'move')
             gameData.pos = move.movePlayer(gameData.map, msg.direction, gameData.pos);
+        else
+            console.log('Nothing to do.')
         ws.send(JSON.stringify(gameData));
     });
 });

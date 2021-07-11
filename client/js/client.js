@@ -1,4 +1,4 @@
-import Actions from './helper/actions.js';
+import Action from './helper/actions.js';
 import ResourceManager from './helper/resources.js';
 import GameMap from './game/map.js';
 
@@ -9,6 +9,7 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 const resourceManager = new ResourceManager();
+const action = new Action(socket);
 
 // ctx.fillStyle = 'Blue';
 // ctx.fillRect(100, 100, 10, 10);
@@ -22,7 +23,7 @@ const resourceManager = new ResourceManager();
 // });
 
 socket.addEventListener('open', (ev) => {
-    console.log('Opened connection.');
+    action.wait();
 });
 
 socket.addEventListener('message', ({data}) => {
@@ -39,6 +40,6 @@ window.addEventListener('keydown', (ev) => {
         'w': 'u',
     }
     if (keyMapping[ev.key])
-        Actions.move(socket, keyMapping[ev.key]);
+        action.move(keyMapping[ev.key]);
 });
 
