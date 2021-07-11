@@ -8,7 +8,7 @@ Simple roguelike tile-based map with limited interactions.
 
 - &#9745; Create websockets server for requests
 - &#9745; Use memory for data
-- &#9744; Create client ui with canvas
+- &#9745; Create client ui with canvas
 - &#9745; Connect client to server
 
 #### Version 1
