@@ -9,3 +9,10 @@ socket.addEventListener('message', (ev) => {
 socket.addEventListener('open', (ev) => {
     Actions.move(socket, 'left');
 });
+
+// Setting up Canvas
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+ctx.fillStyle = 'Blue';
+ctx.fillRect(100, 100, 10, 10);
