@@ -1,3 +1,4 @@
+// Websocket dependencies
 const ws = require('ws');
 const http = require('http');
 
@@ -5,36 +6,29 @@ const http = require('http');
 const server = http.createServer();
 const wss = new ws.Server({noServer:true});
 
+// User dependencies
+const move = require('./game/move');
+
 // Data variables
 // TODO: Remove from global scope somehow
-let playerMap = ['#', '#', '@', '#', '#'];
-let pos = 2;
-
-// TODO: Change parameter names to something better
-const movePlayer = (direction) => {
-    if (direction == 'left')
-        if (pos > 0) {
-            // TODO: Make symbols into constants
-            playerMap[pos-1] = '@';
-            playerMap[pos] = '#';
-            pos--;
-        }
-    if (direction == 'right')
-        if (pos < playerMap.length-1) {
-            playerMap[pos+1] = '@';
-            playerMap[pos] = '#';
-            pos++;
-        }
+let gameData = {
+    map: [
+        [['#'], ['#'], ['#'], ['#'], ['#']],
+        [['#'], ['.'], ['.'], ['.'], ['#']],
+        [['#'], ['.'], ['.'], ['.'], ['#']],
+        [['#'], ['.'], ['.'], ['.'], ['#']],
+        [['#'], ['#'], ['#'], ['#'], ['#']],
+    ],
+    pos: [2, 2]
 };
 
 // Initializes WebSocket server
 wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         const msg = JSON.parse(message);
-        if (msg.action == 'move') {
-            movePlayer(msg.direction);
-        }
-        ws.send(playerMap.join(''));
+        if (msg.action == 'move')
+            gameData.pos = move.movePlayer(gameData.map, msg.direction, gameData.pos);
+        ws.send(JSON.stringify(gameData));
     });
 });
 
