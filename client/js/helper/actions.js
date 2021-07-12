@@ -3,17 +3,12 @@ class Action {
         this.socket = socket;
     }
 
-    move(direction) {
-        this.socket.send(JSON.stringify({
-            action: 'move',
-            direction
-        }));
+    init() {
+        this.socket.emit('init', 'ooga');
     }
 
-    wait() {
-        this.socket.send(JSON.stringify({
-            action: 'wait'
-        }));
+    move(direction) {
+        this.socket.emit('move', direction);
     }
 }
 

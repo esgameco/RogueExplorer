@@ -1,9 +1,14 @@
+// External dependencies
+// import { io } from 'socket-io-client';
+
+// User dependencies
 import Action from './helper/actions.js';
 import ResourceManager from './helper/resources.js';
 import GameMap from './game/map.js';
+import UI from './game/ui.js';
 
-// Creating websocket
-const socket = new WebSocket('ws://localhost:8080/');
+// Creating socket
+const socket = io('ws://localhost:8080/');
 
 // Setting up Canvas
 const canvas = document.getElementById('game');
@@ -12,17 +17,18 @@ const ctx = canvas.getContext('2d');
 // Instanciating helper classes
 const resourceManager = new ResourceManager();
 const action = new Action(socket);
+const ui = new UI();
 
 // Updates map when socket first connects
-socket.addEventListener('open', (ev) => {
-    action.wait();
+socket.on('connect', () => {
+    action.init();
 });
 
 // Updates map every message from server
-socket.addEventListener('message', ({data}) => {
-    const gameData = JSON.parse(data);
+socket.on('update', (gameData) => {
     const gameMap = new GameMap(gameData, resourceManager);
     gameMap.draw(ctx)
+    ui.display(gameData);
 });
 
 // Sends actions to server when player uses keyboard

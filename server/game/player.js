@@ -1,9 +1,10 @@
-const newPlayer = (hp, atk, def, name) => {
+const newPlayer = (hp, atk, def, name, id) => {
     return {
         hp,
         atk,
         def,
-        name
+        name,
+        id
     }
 }
 

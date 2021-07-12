@@ -1,10 +1,16 @@
 // Websocket dependencies
-const ws = require('ws');
 const http = require('http');
 
 // Create servers
 const server = http.createServer();
-const wss = new ws.Server({noServer:true});
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        //   allowedHeaders: ["my-custom-header"],
+        // credentials: true
+    }
+});
 
 // User dependencies
 const move = require('./game/move');
@@ -19,26 +25,35 @@ let gameData = {
     players: []
 };
 
+// TODO: Enemy AI
+// Use setInterval ever 500ms to simulate enemy moves
+
 // Initializes WebSocket server
-wss.on('connection', (ws) => {
-    ws.on('message', (message) => {
-        const msg = JSON.parse(message);
-        if (msg.action == 'move')
-            gameData.pos = move.movePlayer(gameData.map, msg.direction, gameData.pos);
-        if (msg.action == 'init')
-            gameData.players.push(player.newPlayer(10, 5, 3, msg.name));
-        else
-            console.log('Nothing to do.')
-        ws.send(JSON.stringify(gameData));
+io.on('connection', (client) => {
+    console.log(`${client.id} connected`);
+
+    client.on('init', (name) => {
+        gameData.players.push(player.newPlayer(10, 5, 3, name, client.id));
+        client.emit('update', gameData);
+    });
+
+    client.on('move', (direction) => {
+        gameData.pos = move.movePlayer(gameData.map, direction, gameData.pos);
+        client.emit('update', gameData);
+    });
+
+    client.on('disconnect', () => {
+        gameData.players = gameData.players.filter(player => player.id != client.id);
+        console.log(`${client.id} disconnected`);
     });
 });
 
 // Upgrades HTTP to WebSocket
-server.on('upgrade', (req, sock, head) => {
-    wss.handleUpgrade(req, sock, head, (ws) => {
-        wss.emit('connection', ws, req);
-    });
-});
+// server.on('upgrade', (req, sock, head) => {
+//     wss.handleUpgrade(req, sock, head, (ws) => {
+//         wss.emit('connection', ws, req);
+//     });
+// });
 
 // Send http response back
 // server.on('connection', (sock) => {
