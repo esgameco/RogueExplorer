@@ -39,7 +39,7 @@ io.on('connection', (client) => {
     client.on('move', (direction) => {
         let playerNum = player.getPlayer(gameData.players, client.id);
         gameData.players[playerNum].pos = move.movePlayer(gameData.map, direction, gameData.players[playerNum].pos);
-        client.emit('update', gameData);
+        io.emit('update', gameData);
     });
 
     client.on('disconnect', () => {
