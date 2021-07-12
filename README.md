@@ -7,15 +7,15 @@ Simple roguelike tile-based map with limited interactions.
 ## Prototype Build
 
 - Tech
-    - &#9745; Create websockets server for requests
+    - &#9745; Create <s>websockets</s> socket.io server for requests
     - &#9745; Use memory for data
     - &#9745; Create client ui with canvas
     - &#9745; Connect client to server
 - Gameplay
     - &#9745; Moving around
     - &#9745; Collision detection
-    - &#9744; Multiple players
-    - &#9744; Health system
+    - &#9745; Multiple players
+    - &#9745; Health system
     - &#9744; Fighting enemies
     - &#9744; Picking up items
     - &#9744; Inventory system
