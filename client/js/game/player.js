@@ -1,9 +1,10 @@
-import Creature from './utils/creature';
+import Creature from './utils/creature.js';
 
 class Player extends Creature {
-    constructor(pos, hp, atk, def, name) {
+    constructor({pos, hp, atk, def, playerName, playerId}) {
         super('@', pos, hp, atk, def);
-        this.name = name;
+        this.name = playerName;
+        this.id = playerId;
     }
 }
 

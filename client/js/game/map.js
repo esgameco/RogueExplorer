@@ -1,9 +1,9 @@
 import Render from '../helper/render.js';
 
 class GameMap {
-    constructor({map, pos}, rsc_mng) {
-        this.gameMap = map;
-        this.playerPos = pos;
+    constructor(gameMap, players, rsc_mng) {
+        this.gameMap = gameMap;
+        this.players = players;
         this.rsc_mng = rsc_mng;
         this.imgMap = this.createImageMap(this.gameMap);
     }
@@ -40,8 +40,10 @@ class GameMap {
             }
         }
 
-        // Draw Player
-        Render.drawImage(ctx, this.rsc_mng.getTile('@'), this.playerPos[0]*32, (height-this.playerPos[1]-1)*32)
+        // Draw Players
+        this.players.forEach((player) => {
+            Render.drawImage(ctx, this.rsc_mng.getTile('@'), player.pos[0]*32, (height-player.pos[1]-1)*32);
+        });
     }
 }
 

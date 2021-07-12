@@ -21,7 +21,6 @@ const player = require('./game/player');
 // TODO: Remove from global scope somehow
 let gameData = {
     map: gMap.generateMap(30, 15),
-    pos: [2, 2],
     players: []
 };
 
@@ -33,12 +32,13 @@ io.on('connection', (client) => {
     console.log(`${client.id} connected`);
 
     client.on('init', (name) => {
-        gameData.players.push(player.newPlayer(10, 5, 3, name, client.id));
+        gameData.players.push(player.newPlayer([5, 5], 10, 5, 3, name, client.id));
         client.emit('update', gameData);
     });
 
     client.on('move', (direction) => {
-        gameData.pos = move.movePlayer(gameData.map, direction, gameData.pos);
+        let playerNum = player.getPlayer(gameData.players, client.id);
+        gameData.players[playerNum].pos = move.movePlayer(gameData.map, direction, gameData.players[playerNum].pos);
         client.emit('update', gameData);
     });
 

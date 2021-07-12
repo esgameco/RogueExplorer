@@ -7,6 +7,8 @@ import ResourceManager from './helper/resources.js';
 import GameMap from './game/map.js';
 import UI from './game/ui.js';
 
+import Player from './game/player.js';
+
 // Creating socket
 const socket = io('ws://localhost:8080/');
 
@@ -26,8 +28,9 @@ socket.on('connect', () => {
 
 // Updates map every message from server
 socket.on('update', (gameData) => {
-    const gameMap = new GameMap(gameData, resourceManager);
-    gameMap.draw(ctx)
+    const players = gameData.players.map((player) => { return new Player(player) });
+    const gameMap = new GameMap(gameData.map, players, resourceManager);
+    gameMap.draw(ctx);
     ui.display(gameData);
 });
 

@@ -9,3 +9,5 @@ class Creature extends Entity {
         this.def = def;
     }
 }
+
+export default Creature;
