@@ -1,23 +1,18 @@
-const newPlayer = (pos, hp, atk, def, name, id) => {
-    return {
+const newPlayer = (players, pos, hp, atk, def, name, id) => {
+    players[id] = {
         pos,
         hp,
         atk,
         def,
-        playerName: name,
-        playerId: id
+        name,
     };
 };
 
-const getPlayer = (players, id) => {
-    for (let i = 0; i < players.length; i++) {
-        if (players[i].playerId == id)
-            return i;
-    }
-    return -1;
-};
+const removePlayer = (players, id) => {
+    delete players[id];
+}
 
 module.exports = {
     newPlayer,
-    getPlayer
+    removePlayer
 }

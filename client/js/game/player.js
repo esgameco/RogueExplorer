@@ -1,10 +1,10 @@
 import Creature from './utils/creature.js';
 
 class Player extends Creature {
-    constructor({pos, hp, atk, def, playerName, playerId}) {
+    constructor({pos, hp, atk, def, name, id}) {
         super('@', pos, hp, atk, def);
-        this.name = playerName;
-        this.id = playerId;
+        this.name = name;
+        this.id = id;
     }
 }
 

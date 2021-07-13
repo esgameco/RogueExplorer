@@ -28,7 +28,8 @@ socket.on('connect', () => {
 
 // Updates map every message from server
 socket.on('update', (gameData) => {
-    const players = gameData.players.map((player) => { return new Player(player) });
+    const players = Object.keys(gameData.players).map((id) => { return new Player(gameData.players[id]) });
+    console.log(players)
     const gameMap = new GameMap(gameData.map, players, resourceManager);
     gameMap.draw(ctx);
     ui.display(gameData);

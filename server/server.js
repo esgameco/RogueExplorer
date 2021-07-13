@@ -21,29 +21,29 @@ const player = require('./game/player');
 // TODO: Remove from global scope somehow
 let gameData = {
     map: gMap.generateMap(30, 15),
-    players: []
+    players: {}
 };
 
 // TODO: Enemy AI
-// Use setInterval ever 500ms to simulate enemy moves
+// Use setInterval every 100ms to simulate enemy moves
 
 // Initializes WebSocket server
 io.on('connection', (client) => {
     console.log(`${client.id} connected`);
 
     client.on('init', (name) => {
-        gameData.players.push(player.newPlayer([5, 5], 10, 5, 3, name, client.id));
-        client.emit('update', gameData);
+        player.newPlayer(gameData.players, [5, 5], 10, 5, 3, name, client.id);
+        io.emit('update', gameData);
     });
 
     client.on('move', (direction) => {
-        let playerNum = player.getPlayer(gameData.players, client.id);
-        gameData.players[playerNum].pos = move.movePlayer(gameData.map, direction, gameData.players[playerNum].pos);
+        gameData.players[client.id].pos = move.movePlayer(gameData.map, direction, gameData.players[client.id].pos);
         io.emit('update', gameData);
     });
 
     client.on('disconnect', () => {
-        gameData.players = gameData.players.filter(player => player.id != client.id);
+        player.removePlayer(gameData.players, client.id);
+        io.emit('update', gameData);
         console.log(`${client.id} disconnected`);
     });
 });
