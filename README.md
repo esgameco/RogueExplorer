@@ -2,6 +2,27 @@
 
 Simple roguelike tile-based map with limited interactions.
 
+# Setup
+
+Downloading game assets
+```
+curl https://opengameart.org/sites/default/files/crawl-tiles%20Oct-5-2010.zip > images.zip
+unzip images.zip -d ./client/images
+rm images.zip
+```
+
+Running the client (dev only)
+```
+cd client
+serve
+```
+
+Running the server (dev only)
+```
+cd server
+npm run dev
+```
+
 # Roadmap
 
 ## Prototype Build
