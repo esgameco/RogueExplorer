@@ -5,9 +5,7 @@
 import Action from './helper/actions.js';
 import ResourceManager from './helper/resources.js';
 import GameMap from './game/map.js';
-import UI from './game/ui.js';
-
-import Player from './game/player.js';
+import GameInstance from './game/instance.js';
 
 // Creating socket
 const socket = io('ws://localhost:8080/');
@@ -19,11 +17,9 @@ const ctx = canvas.getContext('2d');
 // Instanciating helper classes
 const resourceManager = new ResourceManager();
 const action = new Action(socket);
-const ui = new UI();
 
-// Game data
-let players = {};
-let gameMap = {};
+// Game instance
+const instance = new GameInstance(ctx, resourceManager);
 
 // Updates map when socket first connects
 socket.on('connect', () => {
@@ -32,11 +28,11 @@ socket.on('connect', () => {
 
 // Updates map every message from server
 socket.on('update', (gameData) => {
-    players = Object.fromEntries(Object.entries(gameData.players).map(([k, v]) => [k, new Player(v)]));
-    console.log(players)
-    gameMap = new GameMap(gameData.map, players, resourceManager);
-    gameMap.draw(ctx);
-    ui.display(gameData);
+    instance.update(gameData);
+    // players = Object.fromEntries(Object.entries(gameData.players).map(([k, v]) => [k, new Player(v)]));
+    // console.log(players)
+    // gameMap = new GameMap(gameData.map, players, resourceManager);
+    instance.draw();
 });
 
 // Sends actions to server when player uses keyboard
@@ -49,7 +45,7 @@ window.addEventListener('keydown', (ev) => {
     }
     
     if (keyMapping[ev.key])
-        action.keyMove(keyMapping[ev.key], players[socket.id]);
+        action.keyMove(keyMapping[ev.key], instance.players[socket.id]);
 });
 
 window.addEventListener('mousedown', (ev) => {

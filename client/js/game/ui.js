@@ -1,6 +1,6 @@
 class UI {
-    display(gameData) {
-        console.log(gameData);
+    display(instance) {
+        console.log(instance.players);
     }
 }
 

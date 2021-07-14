@@ -1,10 +1,15 @@
 import Render from '../helper/render.js';
 
 class GameMap {
-    constructor(gameMap, players, rsc_mng) {
-        this.gameMap = gameMap;
-        this.players = players;
+    constructor(rsc_mng, gameMap={}) {
         this.rsc_mng = rsc_mng;
+        this.gameMap = gameMap;
+        this.imgMap = [[0]];
+        // this.imgMap = this.createImageMap(this.gameMap);
+    }
+
+    update(mapData) {
+        this.gameMap = mapData;
         this.imgMap = this.createImageMap(this.gameMap);
     }
 
@@ -27,7 +32,7 @@ class GameMap {
 
     // TODO: Compile separate pieces before drawing
     // Draws the map
-    draw(ctx) {
+    draw(ctx, players) {
         const width = this.imgMap.length;
         const height = this.imgMap[0].length;
 
@@ -41,8 +46,8 @@ class GameMap {
         }
 
         // Draw Players
-        Object.keys(this.players).forEach((id) => {
-            const player = this.players[id];
+        Object.keys(players).forEach((id) => {
+            const player = players[id];
             Render.drawImage(ctx, this.rsc_mng.getTile('@'), player.pos[0]*32, (height-player.pos[1]-1)*32);
         });
     }

@@ -37,7 +37,6 @@ io.on('connection', (client) => {
     });
 
     client.on('move', (newPos) => {
-        console.log(newPos)
         gameData.players[client.id].pos = move.movePlayer(gameData.map, newPos, gameData.players[client.id].pos);
         io.emit('update', gameData);
     });
