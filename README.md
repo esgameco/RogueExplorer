@@ -13,6 +13,7 @@ Simple roguelike tile-based map with limited interactions.
     - &#9745; Connect client to server
 - Gameplay
     - &#9745; Moving around
+        - &#9745; Coordinate-based
     - &#9745; Collision detection
     - &#9745; Multiple players
     - &#9745; Health system

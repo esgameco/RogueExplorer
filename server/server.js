@@ -36,8 +36,9 @@ io.on('connection', (client) => {
         io.emit('update', gameData);
     });
 
-    client.on('move', (direction) => {
-        gameData.players[client.id].pos = move.movePlayer(gameData.map, direction, gameData.players[client.id].pos);
+    client.on('move', (newPos) => {
+        console.log(newPos)
+        gameData.players[client.id].pos = move.movePlayer(gameData.map, newPos, gameData.players[client.id].pos);
         io.emit('update', gameData);
     });
 

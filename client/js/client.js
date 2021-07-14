@@ -21,6 +21,10 @@ const resourceManager = new ResourceManager();
 const action = new Action(socket);
 const ui = new UI();
 
+// Game data
+let players = {};
+let gameMap = {};
+
 // Updates map when socket first connects
 socket.on('connect', () => {
     action.init();
@@ -28,9 +32,9 @@ socket.on('connect', () => {
 
 // Updates map every message from server
 socket.on('update', (gameData) => {
-    const players = Object.keys(gameData.players).map((id) => { return new Player(gameData.players[id]) });
+    players = Object.fromEntries(Object.entries(gameData.players).map(([k, v]) => [k, new Player(v)]));
     console.log(players)
-    const gameMap = new GameMap(gameData.map, players, resourceManager);
+    gameMap = new GameMap(gameData.map, players, resourceManager);
     gameMap.draw(ctx);
     ui.display(gameData);
 });
@@ -43,7 +47,15 @@ window.addEventListener('keydown', (ev) => {
         's': 'd',
         'w': 'u',
     }
+    
     if (keyMapping[ev.key])
-        action.move(keyMapping[ev.key]);
+        action.keyMove(keyMapping[ev.key], players[socket.id]);
 });
 
+window.addEventListener('mousedown', (ev) => {
+    const canvasPos = canvas.getBoundingClientRect();
+    const mapSize = gameMap.getSize();
+    const mousePos = [ev.clientX-canvasPos.left, ev.clientY-canvasPos.top];
+
+    action.mouseMove(mousePos, mapSize);
+});

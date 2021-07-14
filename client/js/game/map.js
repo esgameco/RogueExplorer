@@ -41,9 +41,14 @@ class GameMap {
         }
 
         // Draw Players
-        this.players.forEach((player) => {
+        Object.keys(this.players).forEach((id) => {
+            const player = this.players[id];
             Render.drawImage(ctx, this.rsc_mng.getTile('@'), player.pos[0]*32, (height-player.pos[1]-1)*32);
         });
+    }
+
+    getSize() {
+        return [this.gameMap.length, this.gameMap[0].length];
     }
 }
 
