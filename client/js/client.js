@@ -5,6 +5,7 @@
 import Action from './helper/actions.js';
 import ResourceManager from './helper/resources.js';
 import GameInstance from './game/instance.js';
+import Canvas from './helper/canvas.js';
 
 // Creating socket
 const socket = io('ws://localhost:8080/');
@@ -44,10 +45,18 @@ window.addEventListener('keydown', (ev) => {
         action.keyMove(keyMapping[ev.key], instance.players[socket.id]);
 });
 
+// Sends move action to the server based on the mouse position
 window.addEventListener('mousedown', (ev) => {
-    const canvasPos = canvas.getBoundingClientRect();
-    const mapSize = gameMap.getSize();
-    const mousePos = [ev.clientX-canvasPos.left, ev.clientY-canvasPos.top];
+    const canvasRect = canvas.getBoundingClientRect();
+    const mousePos = [ev.clientX, ev.clientY];
 
-    action.mouseMove(mousePos, mapSize);
+    // TODO: Test if it works
+    if (Canvas.inCanvas(canvasRect, mousePos))
+        action.mouseMove(Canvas.canvasMousePos(canvasRect, mousePos), gameMap.getSize());
 });
+
+// TODO: Move screen when middle mouse is clicked
+
+// TODO: Zoom in/out on middle mouse scroll
+
+// TODO: Context menu on right click
