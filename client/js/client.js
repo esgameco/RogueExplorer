@@ -4,7 +4,6 @@
 // User dependencies
 import Action from './helper/actions.js';
 import ResourceManager from './helper/resources.js';
-import GameMap from './game/map.js';
 import GameInstance from './game/instance.js';
 
 // Creating socket
@@ -29,9 +28,6 @@ socket.on('connect', () => {
 // Updates map every message from server
 socket.on('update', (gameData) => {
     instance.update(gameData);
-    // players = Object.fromEntries(Object.entries(gameData.players).map(([k, v]) => [k, new Player(v)]));
-    // console.log(players)
-    // gameMap = new GameMap(gameData.map, players, resourceManager);
     instance.draw();
 });
 
