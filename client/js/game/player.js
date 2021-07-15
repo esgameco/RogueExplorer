@@ -1,5 +1,6 @@
 import Creature from './utils/creature.js';
 
+// TODO: Use prototypes for '@'
 class Player extends Creature {
     constructor({pos, hp, atk, def, name, id}) {
         super('@', pos, hp, atk, def);

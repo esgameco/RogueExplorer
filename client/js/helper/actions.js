@@ -3,10 +3,12 @@ class Action {
         this.socket = socket;
     }
 
+    // Initializes user with server -- user is added to the game
     init() {
         this.socket.emit('init', 'ooga');
     }
 
+    // Moves in cardinal directions based on keys pressed (wasd)
     keyMove(direction, player) {
         let newPos = player.pos;
         if (direction == 'l')
@@ -21,8 +23,9 @@ class Action {
     }
 
     // TODO: Use A* later to find path based on player's current position
+    // Moves to the position under the mouse
     mouseMove(mousePos, mapSize, scale, tileSize=32) {
-        console.log(scale)
+        // TODO: Move math out of Action
         const newPos = [Math.floor(mousePos[0]/(tileSize*scale)), Math.floor(mapSize[1]-(mousePos[1]/(tileSize*scale)))];
         this.socket.emit('move', newPos);
     }

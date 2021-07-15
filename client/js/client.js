@@ -47,25 +47,21 @@ window.addEventListener('keydown', (ev) => {
 
 // Sends move action to the server based on the mouse position
 // TODO: Context menu on right click
+// TODO: Move screen when middle mouse is clicked
 canvas.addEventListener('mousedown', (ev) => {
     const canvasRect = canvas.getBoundingClientRect();
     const mousePos = [ev.clientX, ev.clientY];
 
-    // TODO: Test if it works
     if (Canvas.inCanvas(canvasRect, mousePos))
         action.mouseMove(Canvas.canvasMousePos(canvasRect, mousePos), instance.gameMap.getSize(), instance.tileScale);
 });
 
-// TODO: Move screen when middle mouse is clicked
-
-// TODO: Zoom in/out on middle mouse scroll
+// Zooms in/out on middle mouse scroll
 canvas.addEventListener('wheel', (ev) => {
     ev.preventDefault();
     if (ev.deltaY < 0)
         instance.tileScale += 0.2;
     else 
         instance.tileScale -= 0.2;
-    // // TODO: Use some better way
-    // instance.gameMap.scale();
     instance.draw();
 });

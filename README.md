@@ -48,6 +48,7 @@ npm run dev
 
 - Tech
     - &#9744; Create socket.io server (with express for authentication) to handle requests
+    - &#9744; Switch to typescript on both sides
     - &#9744; Use redis to handle item, user, and map data
     - &#9744; Create client ui with react
     - &#9744; Connect client to server
