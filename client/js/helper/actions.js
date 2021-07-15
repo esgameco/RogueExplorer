@@ -21,8 +21,9 @@ class Action {
     }
 
     // TODO: Use A* later to find path based on player's current position
-    mouseMove(mousePos, mapSize, tileSize=32) {
-        const newPos = [Math.floor(mousePos[0]/tileSize), Math.floor(mapSize[1]-(mousePos[1]/tileSize))];
+    mouseMove(mousePos, mapSize, scale, tileSize=32) {
+        console.log(scale)
+        const newPos = [Math.floor(mousePos[0]/(tileSize*scale)), Math.floor(mapSize[1]-(mousePos[1]/(tileSize*scale)))];
         this.socket.emit('move', newPos);
     }
 }

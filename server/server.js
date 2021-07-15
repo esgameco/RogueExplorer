@@ -20,7 +20,7 @@ const player = require('./game/player');
 // Data variables
 // TODO: Remove from global scope somehow
 let gameData = {
-    map: gMap.generateMap(30, 15),
+    map: gMap.generateMap(100, 50),
     players: {}
 };
 
@@ -38,7 +38,10 @@ io.on('connection', (client) => {
 
     client.on('move', (newPos) => {
         gameData.players[client.id].pos = move.movePlayer(gameData.map, newPos, gameData.players[client.id].pos);
-        io.emit('update', gameData);
+
+        // Only updates if the position changes correctly
+        if (gameData.players[client.id].pos == newPos)
+            io.emit('update', gameData);
     });
 
     client.on('disconnect', () => {

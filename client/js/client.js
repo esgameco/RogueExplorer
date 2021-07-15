@@ -19,7 +19,7 @@ const resourceManager = new ResourceManager();
 const action = new Action(socket);
 
 // Game instance
-const instance = new GameInstance(ctx, resourceManager);
+const instance = new GameInstance(canvas, ctx, resourceManager);
 
 // Updates map when socket first connects
 socket.on('connect', () => {
@@ -32,7 +32,7 @@ socket.on('update', (gameData) => {
     instance.draw();
 });
 
-// Sends actions to server when player uses keyboard
+// Sends move action to server when player uses one of the available keyboard commands
 window.addEventListener('keydown', (ev) => {
     const keyMapping = {
         'a': 'l',
@@ -46,17 +46,26 @@ window.addEventListener('keydown', (ev) => {
 });
 
 // Sends move action to the server based on the mouse position
-window.addEventListener('mousedown', (ev) => {
+// TODO: Context menu on right click
+canvas.addEventListener('mousedown', (ev) => {
     const canvasRect = canvas.getBoundingClientRect();
     const mousePos = [ev.clientX, ev.clientY];
 
     // TODO: Test if it works
     if (Canvas.inCanvas(canvasRect, mousePos))
-        action.mouseMove(Canvas.canvasMousePos(canvasRect, mousePos), gameMap.getSize());
+        action.mouseMove(Canvas.canvasMousePos(canvasRect, mousePos), instance.gameMap.getSize(), instance.tileScale);
 });
 
 // TODO: Move screen when middle mouse is clicked
 
 // TODO: Zoom in/out on middle mouse scroll
-
-// TODO: Context menu on right click
+canvas.addEventListener('wheel', (ev) => {
+    ev.preventDefault();
+    if (ev.deltaY < 0)
+        instance.tileScale += 0.2;
+    else 
+        instance.tileScale -= 0.2;
+    // // TODO: Use some better way
+    // instance.gameMap.scale();
+    instance.draw();
+});

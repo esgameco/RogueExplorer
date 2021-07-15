@@ -4,10 +4,12 @@ import UI from './ui.js';
 import Player from './player.js';
 
 class GameInstance {
-    constructor(ctx, rscMng) {
+    constructor(canvas, ctx, rscMng) {
+        this.canvas = canvas;
         this.ctx = ctx;
         this.rscMng = rscMng;
         this.ui = new UI();
+        this.tileScale = 1; // Scales the tiles
         this.gameMap = new GameMap(rscMng);
         this.players = {};
         this.enemies = {};
@@ -28,7 +30,10 @@ class GameInstance {
     }
 
     draw() {
-        this.gameMap.draw(this.ctx, this.players);
+        // Clear screen
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.gameMap.draw(this.ctx, this.tileScale, this.players);
         this.ui.display(this);
     }
 }

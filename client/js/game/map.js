@@ -19,6 +19,12 @@ class GameMap {
         
     }
 
+    // // TODO: Rename to something better or make something else do this
+    // // Recreates image map
+    // scale() {
+    //     this.imgMap = this.createImageMap(this.gameMap);
+    // }
+
     // Creates a 2-d array of images based on the text map
     createImageMap(gameMap) {
         let imgMap = new Array(gameMap.length).fill().map(() => new Array(gameMap[0].length));
@@ -32,7 +38,7 @@ class GameMap {
 
     // TODO: Compile separate pieces before drawing
     // Draws the map
-    draw(ctx, players) {
+    draw(ctx, scale, players) {
         const width = this.imgMap.length;
         const height = this.imgMap[0].length;
 
@@ -40,7 +46,7 @@ class GameMap {
         for (let i = 0; i < width; i++) {
             for (let j = 0; j < height; j++) {
                 this.imgMap[i][j].forEach(img => {
-                    Render.drawImage(ctx, img, i*32, (height-j-1)*32);
+                    Render.drawTile(ctx, img, i, (height-j-1), scale);
                 });
             }
         }
@@ -48,7 +54,7 @@ class GameMap {
         // Draw Players
         Object.keys(players).forEach((id) => {
             const player = players[id];
-            Render.drawImage(ctx, this.rsc_mng.getTile('@'), player.pos[0]*32, (height-player.pos[1]-1)*32);
+            Render.drawTile(ctx, this.rsc_mng.getTile('@'), player.pos[0], (height-player.pos[1]-1), scale);
         });
     }
 
