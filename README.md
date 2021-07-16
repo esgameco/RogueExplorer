@@ -11,6 +11,12 @@ unzip images.zip -d ./client/images
 rm images.zip
 ```
 
+#### Install server packages
+```
+cd server
+npm install
+```
+
 #### Running the client (dev only)
 ```
 cd client
