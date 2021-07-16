@@ -1,9 +1,11 @@
-const newPlayer = (players, pos, hp, atk, def, name, id) => {
+const newPlayer = (players, pos, hp, atk, def, xp, items, name, id) => {
     players[id] = {
         pos,
         hp,
         atk,
         def,
+        xp,
+        items,
         name,
     };
 };

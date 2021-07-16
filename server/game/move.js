@@ -5,6 +5,10 @@ const checkWall = (gameMap, pos) => {
     return tileExists(gameMap[pos[0]][pos[1]], '#');
 };
 
+const checkOnlyGround = (gameMap, pos) => {
+    return gameMap[pos[0]][pos[1]].length == 1 && gameMap[pos[0]][pos[1]][0] == '.';
+};
+
 // Checks if a specific tile exists within the whole tile
 const tileExists = (tile, wanted) => {
     for (let i = 0; i < tile.length; i++) {
@@ -57,5 +61,6 @@ const inMap = (gameMap, pos) => {
 
 module.exports = {
     checkWall,
+    checkOnlyGround,
     movePlayer
 }

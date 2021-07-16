@@ -14,14 +14,19 @@ const io = require('socket.io')(server, {
 
 // User dependencies
 const move = require('./game/move');
-const gMap = require('./game/map');
+const gen = require('./game/gen');
 const player = require('./game/player');
 
 // Data variables
 // TODO: Remove from global scope somehow
+let gameMap = gen.generateMap(100, 50);
+let enemies = gen.generateEnemies(gameMap, 50);
+
 let gameData = {
-    map: gMap.generateMap(100, 50),
-    players: {}
+    map: gameMap,
+    players: {},
+    enemies,
+    items: {},
 };
 
 // TODO: Enemy AI
@@ -32,20 +37,36 @@ io.on('connection', (client) => {
     console.log(`${client.id} connected`);
 
     client.on('init', (name) => {
-        player.newPlayer(gameData.players, [5, 5], 10, 5, 3, name, client.id);
+        // TODO: Add starting items
+        player.newPlayer(gameData.players, [5, 5], 10, 5, 3, 0, {}, name, client.id);
         io.emit('update', gameData);
     });
 
     client.on('move', (newPos) => {
-        gameData.players[client.id].pos = move.movePlayer(gameData.map, newPos, gameData.players[client.id].pos);
+        // Checks for whether the client is in the level
+        if (gameData.players[client.id]) {
+            // TODO: Check for whether the player has to pass through walls to get to the new pos
+            gameData.players[client.id].pos = move.movePlayer(gameData.map, newPos, gameData.players[client.id].pos);
 
-        // Only updates if the position changes correctly
-        if (gameData.players[client.id].pos == newPos)
-            io.emit('update', gameData);
+            // Only updates if the position changes correctly
+            if (gameData.players[client.id].pos == newPos)
+                io.emit('update', gameData);
+        }
+        else
+            console.log('Player does not exist.');
+    });
+
+    client.on('attack', (enemyId) => {
+        if (gameData.enemies[enemyId])
+            // TODO: Check distance
+            console.log('Enemy exists');
+        else
+            console.log('Enemy does not exist');
     });
 
     client.on('disconnect', () => {
-        player.removePlayer(gameData.players, client.id);
+        // player.removePlayer(gameData.players, client.id);
+        delete gameData.players[client.id];
         io.emit('update', gameData);
         console.log(`${client.id} disconnected`);
     });

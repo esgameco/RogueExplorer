@@ -35,7 +35,7 @@ class GameMap {
 
     // TODO: Compile separate pieces before drawing
     // Draws the game map to the screen
-    draw(ctx, scale, players) {
+    draw(ctx, scale, players, enemies) {
         const width = this.imgMap.length;
         const height = this.imgMap[0].length;
 
@@ -52,6 +52,13 @@ class GameMap {
         Object.keys(players).forEach((id) => {
             const player = players[id];
             Render.drawTile(ctx, this.rscMng.getTile('@'), player.pos[0], (height-player.pos[1]-1), scale);
+        });
+
+        // TODO: Generalize
+        // Draw Enemies
+        Object.keys(enemies).forEach((id) => {
+            const enemy = enemies[id];
+            Render.drawTile(ctx, this.rscMng.getTile(enemy.symbol), enemy.pos[0], (height-enemy.pos[1]-1), scale);
         });
     }
 

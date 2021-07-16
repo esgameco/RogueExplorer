@@ -3,6 +3,7 @@ import UI from './ui.js';
 import ResourceManager from '../helper/resources.js';
 
 import Player from './player.js';
+import Enemy from './enemy.js';
 
 class GameInstance {
     // TODO: Check if the =new thing works
@@ -32,9 +33,9 @@ class GameInstance {
         if (map)
             this.gameMap.update(map);
         if (players)
-            this.players = Object.fromEntries(Object.entries(players).map(([k, v]) => [k, new Player(v)]));;
+            this.players = Object.fromEntries(Object.entries(players).map(([k, v]) => [k, new Player(v)]));
         if (enemies)
-            this.enemies = 0;
+            this.enemies = Object.fromEntries(Object.entries(enemies).map(([k, v]) => [k, new Enemy(v)]));
         if (items)
             this.items = 0;
     }
@@ -44,7 +45,7 @@ class GameInstance {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Draw to screen
-        this.gameMap.draw(this.ctx, this.tileScale, this.players);
+        this.gameMap.draw(this.ctx, this.tileScale, this.players, this.enemies);
         this.ui.display(this);
     }
 }
