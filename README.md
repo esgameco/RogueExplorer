@@ -41,11 +41,11 @@ npm run dev
 - Gameplay
     - [x] Moving around
         - [x] Coordinate-based
-    - [ ] Panning system
+    - [x] Panning system
     - [x] Collision detection
     - [x] Multiple players
     - [x] Health system
-    - [ ] Fighting enemies
+    - [x] Fighting enemies
     - [ ] Picking up items
     - [ ] Inventory system
     - [ ] Multiple levels
