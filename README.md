@@ -41,6 +41,7 @@ npm run dev
 - Gameplay
     - [x] Moving around
         - [x] Coordinate-based
+    - [ ] Panning system
     - [x] Collision detection
     - [x] Multiple players
     - [x] Health system
