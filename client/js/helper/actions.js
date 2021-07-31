@@ -24,10 +24,26 @@ class Action {
 
     // TODO: Use A* later to find path based on player's current position
     // Moves to the position under the mouse
-    mouseMove(mousePos, mapSize, scale, tileSize=32) {
-        // TODO: Move math out of Action
-        const newPos = [Math.floor(mousePos[0]/(tileSize*scale)), Math.floor(mapSize[1]-(mousePos[1]/(tileSize*scale)))];
+    mouseMove(mousePos, mapSize, mapPos, scale, tileSize=32) {
+        const newPos = this.getTilePos(mousePos, mapSize, mapPos, scale, tileSize);
         this.socket.emit('move', newPos);
+    }
+
+    // Attacks an enemy or player at the mouse position
+    attack({enemies}, mousePos, mapSize, mapPos, scale, tileSize=32) {
+        const tilePos = this.getTilePos(mousePos, mapSize, mapPos, scale, tileSize);
+
+        // TODO: Add player attacking later
+        // Get the enemy or player at position
+        Object.keys(enemies).forEach((id) => {
+            if (enemies[id].pos[0] == tilePos[0] && enemies[id].pos[1] == tilePos[1])
+                this.socket.emit('attack', id);
+        });
+    }
+
+    getTilePos(mousePos, mapSize, mapPos, scale, tileSize=32) {
+        // TODO: Move math out of Action
+        return [Math.floor((mousePos[0]/(tileSize*scale))-mapPos[0]), Math.floor((mapSize[1]-(mousePos[1]/(tileSize*scale)))+mapPos[1])];
     }
 }
 

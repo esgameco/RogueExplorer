@@ -21,6 +21,19 @@ const action = new Action(socket);
 // Game instance
 const instance = new GameInstance(canvas, ctx, resourceManager);
 
+// Panning coordinates
+let prevPos = [];
+let isMouseDown = false;
+let timesSinceDraw = 0;
+
+const staggeredDraw = (inc=1) => {
+    if (timesSinceDraw >= 5) {
+        instance.draw();
+        timesSinceDraw = 0;
+    } else
+        timesSinceDraw += inc;
+};
+
 // Updates map when socket first connects
 socket.on('connect', () => {
     action.init();
@@ -52,16 +65,59 @@ canvas.addEventListener('mousedown', (ev) => {
     const canvasRect = canvas.getBoundingClientRect();
     const mousePos = [ev.clientX, ev.clientY];
 
-    if (Canvas.inCanvas(canvasRect, mousePos))
-        action.mouseMove(Canvas.canvasMousePos(canvasRect, mousePos), instance.gameMap.getSize(), instance.tileScale);
+    // Left Click
+    if (ev.button === 0)
+        action.mouseMove(Canvas.canvasMousePos(canvasRect, mousePos), instance.gameMap.getSize(), instance.mapPos, instance.tileScale);
+    // Middle Click
+    else if (ev.button === 1) {
+        ev.preventDefault();
+        prevPos = mousePos;
+        instance.draw();
+        isMouseDown = true;
+    // Right Click
+    } else if (ev.button === 2) {
+        ev.preventDefault();
+
+        // Use action attack with the enemy id
+        action.attack(instance, Canvas.canvasMousePos(canvasRect, mousePos), instance.gameMap.getSize(), instance.mapPos, instance.tileScale);
+    }
+});
+
+canvas.addEventListener('mousemove', (ev) => {
+    const mousePos = [ev.clientX, ev.clientY];
+
+    if (isMouseDown) {
+        const posChange = [mousePos[0]-prevPos[0], mousePos[1]-prevPos[1]];
+        instance.mapPos[0] += posChange[0]/32;
+        instance.mapPos[1] += posChange[1]/32;
+        prevPos = mousePos;
+        // Used to draw to the screen less so it doesn't lag
+        // staggeredDraw();
+        instance.draw();
+    }
+});
+
+canvas.addEventListener('mouseup', (ev) => {
+    const mousePos = [ev.clientX, ev.clientY];
+
+    // Middle Click
+    if (ev.button === 1) {
+        instance.draw();
+        isMouseDown = false;
+    }
 });
 
 // Zooms in/out on middle mouse scroll
 canvas.addEventListener('wheel', (ev) => {
     ev.preventDefault();
     if (ev.deltaY < 0)
-        instance.tileScale += 0.2;
+        instance.changeScale(0.2);
     else 
-        instance.tileScale -= 0.2;
+        instance.changeScale(-0.2);
     instance.draw();
+});
+
+// Stops right click menu from showing up
+canvas.addEventListener('contextmenu', (ev) => {
+    ev.preventDefault();
 });

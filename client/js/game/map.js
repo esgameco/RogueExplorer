@@ -1,7 +1,7 @@
 import Render from '../helper/render.js';
 
 class GameMap {
-    constructor(rscMng, gameMap={}) {
+    constructor(rscMng, mapPos=[0,0], gameMap={}) {
         this.rscMng = rscMng;
         this.gameMap = gameMap;
         this.imgMap = [[]];
@@ -16,12 +16,6 @@ class GameMap {
         }
     }
 
-    // TODO: Dereference when I know what I need
-    // Compiles separate entities into the map, to be rendered
-    compile(gameData) {
-        
-    }
-
     // Creates a 2-d array of images based on the text map
     createImageMap(gameMap) {
         let imgMap = new Array(gameMap.length).fill().map(() => new Array(gameMap[0].length));
@@ -34,7 +28,7 @@ class GameMap {
     }
 
     // Draws the game map to the screen
-    draw(ctx, scale, players, enemies) {
+    draw(ctx, mapPos, scale, players, enemies) {
         const width = this.imgMap.length;
         const height = this.imgMap[0].length;
 
@@ -42,7 +36,7 @@ class GameMap {
         for (let i = 0; i < width; i++) {
             for (let j = 0; j < height; j++) {
                 this.imgMap[i][j].forEach(img => {
-                    Render.drawTile(ctx, img, i, (height-j-1), scale);
+                    this.drawTile(ctx, mapPos, scale, img, i, height-j-1);
                 });
             }
         }
@@ -60,15 +54,19 @@ class GameMap {
         //     Render.drawTile(ctx, this.rscMng.getTile(enemy.symbol), enemy.pos[0], (height-enemy.pos[1]-1), scale);
         // });
 
-        this.drawEntities(players, height, scale);
-        this.drawEntities(enemies, height, scale);
+        this.drawEntities(ctx, mapPos, scale, players, height);
+        this.drawEntities(ctx, mapPos, scale, enemies, height);
     }
 
-    drawEntities(entities, height, scale) {
+    drawEntities(ctx, mapPos, scale, entities, height) {
         Object.keys(entities).forEach((id) => {
             const entity = entities[id];
-            Render.drawTile(ctx, this.rscMng.getTile(entity.symbol), entity.pos[0], (height-entity.pos[1]-1), scale);
+            Render.drawTile(ctx, this.rscMng.getTile(entity.symbol), entity.pos[0]+mapPos[0], (height-entity.pos[1]-1)+mapPos[1], scale);
         });
+    }
+
+    drawTile(ctx, mapPos, scale, img, x, y) {
+        Render.drawTile(ctx, img, x+mapPos[0], y+mapPos[1], scale);
     }
 
     // Returns the size of the game map

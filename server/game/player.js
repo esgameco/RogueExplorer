@@ -14,7 +14,12 @@ const removePlayer = (players, id) => {
     delete players[id];
 }
 
+const playerExists = (players, id) => {
+    return players[id] != null;
+}
+
 module.exports = {
     newPlayer,
-    removePlayer
+    removePlayer,
+    playerExists,
 }

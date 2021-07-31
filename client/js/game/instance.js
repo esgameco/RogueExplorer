@@ -8,6 +8,10 @@ import Enemy from './enemy.js';
 class GameInstance {
     // TODO: Check if the =new thing works
     constructor(canvas, ctx, rscMng=new ResourceManager(), ui=new UI()) {
+        // Constants
+        this.MIN_SCALE = 0.8;
+        this.MAX_SCALE = 2;
+
         // Canvas objects
         this.canvas = canvas;
         this.ctx = ctx;
@@ -19,12 +23,24 @@ class GameInstance {
 
         // Camera state
         this.tileScale = 1; // Zoom amount
+        this.mapPos = [0, 0];
 
         // Game state
         this.gameMap = new GameMap(rscMng);
         this.players = {};
         this.enemies = {};
         this.items = {};
+    }
+
+    changeScale(amt) {
+        let newScale = this.tileScale + amt;
+
+        console.log(this.MAX_SCALE)
+        if (newScale >= this.MAX_SCALE)
+            newScale = this.MAX_SCALE;
+        else if (newScale <= this.MIN_SCALE)
+            newScale = this.MIN_SCALE;
+        this.tileScale = newScale;
     }
 
     // Update instance using data object
@@ -45,7 +61,7 @@ class GameInstance {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Draw to screen
-        this.gameMap.draw(this.ctx, this.tileScale, this.players, this.enemies);
+        this.gameMap.draw(this.ctx, this.mapPos, this.tileScale, this.players, this.enemies);
         this.ui.display(this);
     }
 }
