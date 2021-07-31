@@ -33,7 +33,6 @@ class GameMap {
         return imgMap;
     }
 
-    // TODO: Compile separate pieces before drawing
     // Draws the game map to the screen
     draw(ctx, scale, players, enemies) {
         const width = this.imgMap.length;
@@ -48,17 +47,27 @@ class GameMap {
             }
         }
 
-        // Draw Players
-        Object.keys(players).forEach((id) => {
-            const player = players[id];
-            Render.drawTile(ctx, this.rscMng.getTile('@'), player.pos[0], (height-player.pos[1]-1), scale);
-        });
+        // // Draw Players
+        // Object.keys(players).forEach((id) => {
+        //     const player = players[id];
+        //     Render.drawTile(ctx, this.rscMng.getTile('@'), player.pos[0], (height-player.pos[1]-1), scale);
+        // });
 
-        // TODO: Generalize
-        // Draw Enemies
-        Object.keys(enemies).forEach((id) => {
-            const enemy = enemies[id];
-            Render.drawTile(ctx, this.rscMng.getTile(enemy.symbol), enemy.pos[0], (height-enemy.pos[1]-1), scale);
+        // // TODO: Generalize
+        // // Draw Enemies
+        // Object.keys(enemies).forEach((id) => {
+        //     const enemy = enemies[id];
+        //     Render.drawTile(ctx, this.rscMng.getTile(enemy.symbol), enemy.pos[0], (height-enemy.pos[1]-1), scale);
+        // });
+
+        this.drawEntities(players, height, scale);
+        this.drawEntities(enemies, height, scale);
+    }
+
+    drawEntities(entities, height, scale) {
+        Object.keys(entities).forEach((id) => {
+            const entity = entities[id];
+            Render.drawTile(ctx, this.rscMng.getTile(entity.symbol), entity.pos[0], (height-entity.pos[1]-1), scale);
         });
     }
 
