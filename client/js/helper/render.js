@@ -15,7 +15,18 @@ const drawTile = (ctx, img, tileX, tileY, scale=1) => {
     drawImage(ctx, img, tileX*img.width*scale, tileY*img.height*scale, scale);
 };
 
+// Draws a UI box with text
+const drawBox = (ctx, text, {x, y, w, h}, {boxColor, textColor}, font='20px Georgia') => {
+    ctx.fillStyle = boxColor;
+    ctx.fillRect(x, y, w, h);
+
+    ctx.font = font;
+    ctx.fillStyle = textColor;
+    ctx.fillText(text, x+20, y+20);
+};
+
 export default {
     drawImage,
-    drawTile
+    drawTile,
+    drawBox
 };

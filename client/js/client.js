@@ -19,7 +19,7 @@ const resourceManager = new ResourceManager();
 const action = new Action(socket);
 
 // Game instance
-const instance = new GameInstance(canvas, ctx, resourceManager);
+const instance = new GameInstance(canvas, ctx, socket, resourceManager);
 
 // Panning coordinates
 let prevPos = [];

@@ -61,7 +61,8 @@ class GameMap {
     drawEntities(ctx, mapPos, scale, entities, height) {
         Object.keys(entities).forEach((id) => {
             const entity = entities[id];
-            Render.drawTile(ctx, this.rscMng.getTile(entity.symbol), entity.pos[0]+mapPos[0], (height-entity.pos[1]-1)+mapPos[1], scale);
+            // TODO: Check
+            this.drawTile(ctx, mapPos, scale, this.rscMng.getTile(entity.symbol), entity.pos[0], (height-entity.pos[1]-1));
         });
     }
 

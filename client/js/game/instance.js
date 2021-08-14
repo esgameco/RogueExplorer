@@ -7,10 +7,13 @@ import Enemy from './enemy.js';
 
 class GameInstance {
     // TODO: Check if the =new thing works
-    constructor(canvas, ctx, rscMng=new ResourceManager(), ui=new UI()) {
+    constructor(canvas, ctx, socket, rscMng=new ResourceManager(), ui=new UI()) {
         // Constants
-        this.MIN_SCALE = 0.8;
+        this.MIN_SCALE = 0.7;
         this.MAX_SCALE = 2;
+
+        // Socket ID
+        this.socket = socket;
 
         // Canvas objects
         this.canvas = canvas;
