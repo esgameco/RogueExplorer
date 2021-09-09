@@ -13,7 +13,7 @@ class UI {
             ATK: player.atk,
             DEF: player.def,
             XP: player.xp
-        }, {x:20, y:20, w:200, h:150}, {boxColor: 'white', textColor: 'black'});
+        }, {x:1280-220, y:20, w:200, h:150}, {boxColor: 'white', textColor: 'black'});
     }
 }
 

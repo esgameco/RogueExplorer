@@ -74,6 +74,7 @@ canvas.addEventListener('mousedown', (ev) => {
         prevPos = mousePos;
         instance.draw();
         isMouseDown = true;
+        console.log('test')
     // Right Click
     } else if (ev.button === 2) {
         ev.preventDefault();

@@ -16,13 +16,16 @@ const drawTile = (ctx, img, tileX, tileY, scale=1) => {
 };
 
 // Draws a UI box with text
-const drawBox = (ctx, text, {x, y, w, h}, {boxColor, textColor}, font='20px Georgia') => {
+const drawBox = (ctx, textData, {x, y, w, h}, {boxColor, textColor}, font='20px Georgia') => {
     ctx.fillStyle = boxColor;
     ctx.fillRect(x, y, w, h);
 
     ctx.font = font;
     ctx.fillStyle = textColor;
-    ctx.fillText(text, x+20, y+20);
+    // TODO: Draw all text in textData 
+    Object.keys(textData).forEach((key, i) => {
+        ctx.fillText(`${key}: ${textData[key]}`, x+20, y+30+(i*20));
+    });
 };
 
 export default {
